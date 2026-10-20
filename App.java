@@ -12,10 +12,16 @@ import java.util.List;
  * Starts built-in Java HTTP server on port 8080 and handles HTTP API endpoints.
  */
 public class App {
-    private static final int PORT = 8080;
-
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        int port = 8080;
+        String envPort = System.getenv("PORT");
+        if (envPort != null && !envPort.isEmpty()) {
+            try {
+                port = Integer.parseInt(envPort);
+            } catch (NumberFormatException ignored) {}
+        }
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
         // 1. Static Files (HTML, CSS, JS)
         server.createContext("/", exchange -> {
@@ -125,7 +131,7 @@ public class App {
         server.start();
         System.out.println("==================================================");
         System.out.println(" Leave Management System Server Started!");
-        System.out.println(" Open in browser: http://localhost:" + PORT);
+        System.out.println(" Open in browser: http://localhost:" + port);
         System.out.println("==================================================");
     }
 
