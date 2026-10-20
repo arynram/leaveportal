@@ -216,3 +216,35 @@ function logout() {
     document.getElementById('email').value = '';
     document.getElementById('password').value = '';
 }
+
+// 7. Preview Helpers for Documentation Screenshots
+window.addEventListener('load', () => {
+    const params = new URLSearchParams(window.location.search);
+    const view = params.get('preview');
+    if (view === 'employee') {
+        currentUser = { name: 'Rahul Sharma', email: 'employee@gmail.com', role: 'EMPLOYEE', balance: 15 };
+        showDashboard();
+    } else if (view === 'admin') {
+        currentUser = { name: 'Admin User', email: 'admin@gmail.com', role: 'ADMIN', balance: 0 };
+        showDashboard();
+    } else if (view === 'error_login') {
+        document.getElementById('email').value = 'employee@gmail.com';
+        document.getElementById('password').value = 'wrongpassword123';
+        const err = document.getElementById('login-error');
+        err.innerText = 'Invalid email or password.';
+        err.style.display = 'block';
+    } else if (view === 'error_balance') {
+        currentUser = { name: 'Rahul Sharma', email: 'employee@gmail.com', role: 'EMPLOYEE', balance: 15 };
+        showDashboard();
+        setTimeout(() => {
+            const err = document.getElementById('apply-err');
+            err.innerText = 'Insufficient balance! You have only 15 days left.';
+            err.style.display = 'block';
+            document.getElementById('leave-days').value = '20';
+            document.getElementById('leave-reason').value = 'Annual vacation abroad (Requested 20 days)';
+        }, 200);
+    } else if (view === 'approved') {
+        currentUser = { name: 'Rahul Sharma', email: 'employee@gmail.com', role: 'EMPLOYEE', balance: 12 };
+        showDashboard();
+    }
+});
